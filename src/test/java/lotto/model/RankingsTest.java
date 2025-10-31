@@ -1,4 +1,4 @@
-package lotto;
+package lotto.model;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -40,8 +40,8 @@ public class RankingsTest {
     @ParameterizedTest
     void rankConditionsTest(Rankings ranking, int matchedNumberCount, boolean hasBonusNum, int expectedPrice) {
         // when
-        int count = ranking.getCount();
-        boolean bonus = ranking.hasBonusNum();
+        int count = ranking.getMatchedNumberCount();
+        boolean bonus = ranking.hasBonusNumber();
         int price = ranking.getPrice();
 
         // then
