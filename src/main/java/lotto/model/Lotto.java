@@ -23,6 +23,10 @@ public class Lotto {
         return numbers.contains(number);
     }
 
+    public static Lotto from(final List<Integer> numbers) {
+        return new Lotto(numbers);
+    }
+
 
     private static class Validator {
         private static void validate(final List<Integer> numbers) {
