@@ -14,9 +14,10 @@ public enum ErrorMessage {
     DUPLICATED_NUMBER_ERROR("숫자가 중복 되었습니다."),
     INVALID_LOTTO_SIZE_ERROR(MessageFormat.format("로또 번호는 총 {0}개 입니다.", LOTTO_SIZE));
 
+    private static final String PREFIX = "[ERROR] ";
     private final String message;
     ErrorMessage(String message){
-        this.message = message;
+        this.message = PREFIX + message;
     }
 
     public String getMessage(){
