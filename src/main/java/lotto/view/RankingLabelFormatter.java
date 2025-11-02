@@ -2,7 +2,6 @@ package lotto.view;
 
 import java.text.DecimalFormat;
 import java.text.MessageFormat;
-import java.text.NumberFormat;
 import lotto.model.Rankings;
 
 public class RankingLabelFormatter {
