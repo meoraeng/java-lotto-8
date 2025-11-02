@@ -1,8 +1,10 @@
 package lotto.model;
 
+import static camp.nextstep.edu.missionutils.test.Assertions.assertRandomUniqueNumbersInRangeTest;
 import static lotto.global.constants.NumberType.*;
 import static org.assertj.core.api.Assertions.*;
 
+import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -13,26 +15,37 @@ class LottoFactoryTest {
     void createFromValidAmountCreatesLottos() {
         // given
         LottosFactory factory = new LottosFactory();
-        int amount = 8000; // 8장
 
         // when
-        Lottos lottos = factory.createFrom(amount);
+        Lottos lottos = factory.createFrom(8000);
 
         // then
         assertThat(lottos.getLottos()).hasSize(8);
     }
 
     @Test
-    @DisplayName("생성된 각 로또는 유효한 값으로, 번호 개수를 준수하여 생성된다.")
-    void createLottosHaveValidNumbers() {
+    @DisplayName("랜덤 값이 고정된 상황에서 로또가 올바르게 생성되는지 검증")
+    void createLottosHaveValidNumbersWithRandom() {
         // given
         LottosFactory factory = new LottosFactory();
-        Lottos lottos = factory.createFrom(5000);
 
-        // then
-        for (Lotto lotto : lottos.getLottos()) {
-            assertThat(lotto.countMatches(lotto)).isEqualTo(LOTTO_SIZE.getValue());
-        }
+        assertRandomUniqueNumbersInRangeTest(
+                () -> {
+                    // when
+                    Lottos lottos = factory.createFrom(2000);
+                    List<Lotto> generated = lottos.getLottos();
+
+                    // then
+                    assertThat(generated.get(0).contains(8)).isTrue();
+                    assertThat(generated.get(1).contains(3)).isTrue();
+                    assertThat(generated).allSatisfy(lotto ->
+                            assertThat(lotto.countMatches(lotto)).isEqualTo(LOTTO_SIZE.getValue())
+                    );
+                },
+
+                List.of(8, 21, 23, 41, 42, 43),
+                List.of(3, 5, 11, 16, 32, 38)
+        );
     }
 
     @Test
