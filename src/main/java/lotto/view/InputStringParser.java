@@ -7,6 +7,7 @@ import lotto.global.exception.ErrorMessage;
 
 
 public class InputStringParser {
+    // 공백까지 체크하고 제거해서 split하도록 표현식 작성
     private static final Pattern COMMA_SEPARATOR_REGEX = Pattern.compile("\\s*,\\s*");
 
     private InputStringParser() {}
