@@ -15,6 +15,7 @@ public class OutputView {
     private static final String STAT_LINE_FORMAT      = "{0} - {1,number,integer}개";
     private static final String RETURN_RATE_FORMAT = "총 수익률은 {0,number,0.0}%입니다.";
 
+    // enum 데이터의 출력 순서 표현을 위한 상수 리스트
     public static final List<Rankings> RESULT_ORDER = List.of(
             Rankings.FIFTH,
             Rankings.FOURTH,

@@ -90,7 +90,7 @@ class WinningResultTest {
         double returnRate = result.calculateReturnRate(lottos);
 
         // then
-        double expectedReturnRate = (double) totalPayment / expectedTotalPrice * 100.0;
+        double expectedReturnRate = (double) expectedTotalPrice / totalPayment * 100.0;
 
         assertThat(returnRate).isEqualTo(expectedReturnRate);
     }

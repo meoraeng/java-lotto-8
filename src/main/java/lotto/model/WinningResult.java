@@ -66,7 +66,7 @@ public class WinningResult {
         int totalPrice = getTotalPrice();
         int totalPayment = lottos.countLottos() * LOTTO_COST.getValue();
 
-        return (double) totalPayment / totalPrice * 100.0;
+        return (double) totalPrice / totalPayment * 100.0;
     }
 
     private int getTotalPrice() {
