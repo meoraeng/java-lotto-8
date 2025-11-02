@@ -3,6 +3,7 @@ package lotto.controller;
 import java.util.List;
 import java.util.Map;
 
+import java.util.function.Supplier;
 import lotto.model.BonusNumber;
 import lotto.model.Lotto;
 import lotto.model.Lottos;
@@ -28,31 +29,62 @@ public class LottoController {
     }
 
     public void run() {
-        // 금액을 입력받고 로또를 생성
-        int paymentAmount = InputStringParser.stringToInteger(inputView.readPaymentAmount());
-        Lottos lottos = lottosFactory.createFrom(paymentAmount);
+        // 금액을 입력받고 구매한 로또 출력
+        Lottos lottos = readPaymentAmountAndCreateLottos();
+        printPurchaseInfo(lottos);
 
-        // 구매 결과 출력
+        // 당첨 번호와 보너스 번호를 입력받아 결과 생성
+        WinningNumbers winningNumbers = readWiningNumbers();
+        WinningResult result = buildResult(lottos, winningNumbers);
+
+        // 생성한 결과 및 최종 수익률 출력
+        printStatistics(result, lottos);
+    }
+
+    private Lottos readPaymentAmountAndCreateLottos() {
+        return retryUntilValid(()-> {
+            int amount = InputStringParser.stringToInteger(inputView.readPaymentAmount());
+            return lottosFactory.createFrom(amount);
+        });
+    }
+
+    private void printPurchaseInfo(Lottos lottos) {
         outputView.printPurchaseCount(lottos.countLottos());
         outputView.printLottos(lottos.getLottos());
+    }
 
-        // 당첨 번호와 보너스 번호를 입력받아 도메인에 저장
-        List<Integer> winNums = InputStringParser.stringsToIntegers(inputView.readWiningNumbers());
-        Lotto mainNumbers = Lotto.from(winNums);
+    private WinningNumbers readWiningNumbers() {
+        return retryUntilValid(() -> {
+            List<Integer> mains = InputStringParser.stringsToIntegers(inputView.readWiningNumbers());
+            Lotto mainNumbers = Lotto.from(mains);
 
-        int bonusNumberValue = InputStringParser.stringToInteger(inputView.readBonusNumber());
-        BonusNumber bonusNumber = new BonusNumber(bonusNumberValue);
+            int bonusNumberValue = InputStringParser.stringToInteger(inputView.readBonusNumber());
+            BonusNumber bonusNumber = new BonusNumber(bonusNumberValue);
 
-        WinningNumbers winningNumbers = WinningNumbers.of(mainNumbers, bonusNumber);
+            return WinningNumbers.of(mainNumbers, bonusNumber);
+        });
+    }
 
-        // 당첨 결과 생성
-        WinningResult result = WinningResult.of(lottos, winningNumbers);
-        Map<Rankings, Integer> counts =
-                ResultFormatter.orderedCountMap(result);
+    private WinningResult buildResult(Lottos lottos, WinningNumbers winningNumbers) {
+        return WinningResult.of(lottos, winningNumbers);
+    }
 
-        // 당첨 결과에 대한 통계 출력
+    private void printStatistics(WinningResult result, Lottos lottos) {
         outputView.printResultHeader();
+        Map<Rankings, Integer> counts = ResultFormatter.orderedCountMap(result);
         outputView.printResultStatistics(counts);
         outputView.printReturnRate(result.calculateReturnRate(lottos));
+
+    }
+
+    // 실패한 경우 메시지를 출력하고 계속해서 값을 입력받기 위한 메서드
+    private <T> T retryUntilValid(Supplier<T> step) {
+        while (true) {
+            try {
+                return step.get();
+            } catch (IllegalArgumentException e) {
+                System.out.println(e.getMessage());
+            }
+        }
     }
 }
