@@ -12,7 +12,7 @@ public class OutputView {
     public static final String RESULT_HEADER_RULE  = "---";
 
     private static final String PURCHASE_COUNT_FORMAT = "{0,number,integer}개를 구매했습니다.";
-    private static final String STAT_LINE_FORMAT      = "{0} - {1,number,integer}개";
+    private static final String STATSTICS_LINE_FORMAT      = "{0} - {1,number,integer}개";
     private static final String RETURN_RATE_FORMAT = "총 수익률은 {0,number,0.0}%입니다.";
 
     // enum 데이터의 출력 순서 표현을 위한 상수 리스트
@@ -44,7 +44,7 @@ public class OutputView {
         for (Rankings ranking : RESULT_ORDER) {
             String label = RankingLabelFormatter.labelOf(ranking);
             int count = rankingCount.getOrDefault(ranking, 0);
-            System.out.println(MessageFormat.format(STAT_LINE_FORMAT, label, count));
+            System.out.println(MessageFormat.format(STATSTICS_LINE_FORMAT, label, count));
         }
     }
 
