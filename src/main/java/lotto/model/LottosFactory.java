@@ -13,7 +13,8 @@ import lotto.global.exception.ErrorMessage;
 
 public class LottosFactory {
     public Lottos createFrom(int paymentAmount) {
-        validatePayment(paymentAmount);
+        validatePayAmountPositive(paymentAmount);
+        validatePaymentUnit(paymentAmount);
 
         int quantity = calculateQuantity(paymentAmount);
         List<Lotto> lottos = new ArrayList<>();
@@ -37,11 +38,14 @@ public class LottosFactory {
         return paymentAmount / LOTTO_COST.getValue();
     }
 
-    private void validatePayment(int amount) {
-        if (amount <= 0) {
+    private void validatePayAmountPositive(int paymentAmount) {
+        if (paymentAmount <= 0) {
             throw new IllegalArgumentException(ErrorMessage.INVALID_RANGE_ERROR.getMessage());
         }
-        if (amount % LOTTO_COST.getValue() != 0) {
+    }
+
+    private void validatePaymentUnit(int paymentAmount) {
+        if (paymentAmount % LOTTO_COST.getValue() != 0) {
             throw new IllegalArgumentException(ErrorMessage.INVALID_COST_ERROR.getMessage());
         }
     }
