@@ -7,7 +7,7 @@ public class InputView {
     public static final String PROMPT_WINNING = "당첨 번호를 입력해 주세요.";
     public static final String PROMPT_BONUS = "보너스 번호를 입력해 주세요.";
 
-    public String readLine(String prompt) {
+    private String readLine(String prompt) {
         System.out.println(prompt);
         return Console.readLine();
     }
