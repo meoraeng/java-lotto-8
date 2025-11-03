@@ -5,7 +5,6 @@ import java.text.MessageFormat;
 import lotto.model.Rankings;
 
 public class RankingLabelFormatter {
-    private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("#,###");
 
     private static final String DEFAULT_FORMAT = "{0}개 일치 ({1, number}원)";
     private static final String SECOND_FORMAT = "{0}개 일치, 보너스 볼 일치 ({1, number}원)";
