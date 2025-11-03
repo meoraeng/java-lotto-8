@@ -17,21 +17,21 @@ public class InputStringParser {
         String[] tokens = split(input);
         List<Integer> numbers = new ArrayList<>(tokens.length);
         for (String token : tokens) {
-            numbers.add(validateNumberFormat(token));
+            numbers.add(strictParseInteger(token));
         }
         return numbers;
     }
 
     public static int stringToInteger(String input) {
         validateNonBlank(input);
-        return validateNumberFormat(input.trim());
+        return strictParseInteger(input.trim());
     }
 
     private static String[] split(String input) {
         return COMMA_SEPARATOR_REGEX.split(input);
     }
 
-    private static int validateNumberFormat(String string) {
+    private static int strictParseInteger(String string) {
         try {
             return Integer.parseInt(string);
         } catch (NumberFormatException e) {
