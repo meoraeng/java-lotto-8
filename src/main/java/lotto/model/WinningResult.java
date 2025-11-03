@@ -14,14 +14,14 @@ public class WinningResult {
         this.winningResult = winningResult;
     }
 
-    private WinningResult(final Lottos loots, final WinningNumbers winningNumbers) {
+    private WinningResult(final Lottos lottos, final WinningNumbers winningNumbers) {
         this.winningResult = new EnumMap<>(Rankings.class);
         initializeResult();
-        generateResult(loots, winningNumbers);
+        generateResult(lottos, winningNumbers);
     }
 
-    public static WinningResult from(final Map<Rankings, Integer> winningResult) {
-        return new WinningResult(winningResult);
+    public static WinningResult from(final Map<Rankings, Integer> counts) {
+        return new WinningResult(new EnumMap<>(counts));
     }
 
     public static WinningResult of(final Lottos lottos, final WinningNumbers winningNumbers) {
@@ -52,7 +52,7 @@ public class WinningResult {
     }
     // 당첨 등수에 대한 통계를 반환하는 메서드(몇 번 당첨되었는지)
     public Integer getValue(final Rankings rankings) {
-        return winningResult.get(rankings);
+        return winningResult.getOrDefault(rankings, 0);
     }
 
 
@@ -60,7 +60,7 @@ public class WinningResult {
      * 등수 정보 기반 총 수익률 계산 로직
      *
      * @param lottos 로또의 수익률 계산을 위한 구매 정보
-     * @return 총 수익률
+     * @return 총 수익률(퍼센트)
      */
     public double calculateReturnRate(final Lottos lottos) {
         int totalPrice = getTotalPrice();
